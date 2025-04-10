@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CORS Test</title>
+    <script>
+        function testFetch(url) {
+            // Display loading message
+            document.getElementById('result').innerHTML = 'Loading from ' + url + '...';
+            
+            // Make the API call
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Display the response data
+                document.getElementById('result').innerHTML = JSON.stringify(data, null, 2);
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                // Display any errors
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>CORS Test</h1>
+    <div style="margin-bottom: 20px;">
+        <h3>Local Testing</h3>
+        <button onclick="testFetch('http://localhost:8001/')">Test Root API</button>
+        <button onclick="testFetch('http://localhost:8001/api/jobs/')">Test Jobs API</button>
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+        <h3>Ngrok Testing</h3>
+        <button onclick="testFetch('https://847e-182-78-66-66.ngrok-free.app/')">Test Ngrok Root</button>
+        <button onclick="testFetch('https://847e-182-78-66-66.ngrok-free.app/api/jobs/')">Test Ngrok Jobs API</button>
+    </div>
+    
+    <pre id="result" style="margin-top: 20px; padding: 10px; background-color: #f0f0f0;"></pre>
+</body>
+</html> 
